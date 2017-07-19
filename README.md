@@ -30,7 +30,7 @@ I want to see the history (operation, date, amount, balance)  of my operations
 
 ####################################
 
-developpé avec Spring Boot, Hibernate/JPA, MySql, Spring data, Spring MVC pour les WebService Rest
+Techno : Spring Boot, Hibernate/JPA, MySql, Spring data, Spring MVC pour les WebService Rest
 			et Angular 2/4  avec @angular/cli
 
 ATTENTION : si le projet java est lancé en tant que JavaApplication il n y a rien d'autre à faire,
