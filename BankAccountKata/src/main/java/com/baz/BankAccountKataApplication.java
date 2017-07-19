@@ -28,18 +28,18 @@ public class BankAccountKataApplication implements CommandLineRunner{
 	@Override
 	public void run(String... arg0) throws Exception {
 
-		Client client = new Client("Jean Moulin ", "jmoulin@email.com" , "mdp");
-		Client existClient = clientService.findByEmail(client);
-		//si le client test n'existe pas, on le crée
-		if(existClient == null) {
-			client = clientService.create(client);
-			String codeCompte = client.getCompte().getCodeCompte();
-			Compte compte = metier.consulterCompte(codeCompte);
-			//versement de 2000 € dans le compte
-			metier.verser(compte.getCodeCompte(), 2000);
-			//retrait de 500€ dans le compte
-			metier.retirer(compte.getCodeCompte(), 500);
-		}
+//		Client client = new Client("Jean Moulin ", "jmoulin@email.com" , "mdp");
+//		Client existClient = clientService.findByEmail(client);
+//		//si le client test n'existe pas, on le crée
+//		if(existClient == null) {
+//			client = clientService.create(client);
+//			String codeCompte = client.getCompte().getCodeCompte();
+//			Compte compte = metier.consulterCompte(codeCompte);
+//			//versement de 2000 € dans le compte
+//			metier.verser(compte.getCodeCompte(), 2000);
+//			//retrait de 500€ dans le compte
+//			metier.retirer(compte.getCodeCompte(), 500);
+//		}
 		
 	}
 }

@@ -44,10 +44,11 @@ public class ClientServiceImpl implements IClientService {
 			logger.error("Ce mail est déjà existant");
 
 		} else {
-
+			Compte compte;
+			client.setCompte(null);
 			c = clientDao.save(client);
 			String codeCompteAutoMatic = Long.valueOf(new Date().getTime()).toString();
-			Compte compte = new Compte(codeCompteAutoMatic, new Date(), 1000, 200, c);
+			compte = new Compte(codeCompteAutoMatic, new Date(), 1000, 200, c);
 			compte = compteDao.save(compte);
 			c.setCompte(compte);
 			logger.debug("Vous avez été bien inscrit");
