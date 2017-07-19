@@ -15,6 +15,7 @@ export class OperationComponent  implements OnInit{
  private operation : Operation;
  private errors: string;
  private validation: string;
+ private montant:number=0;
 
 
   constructor(private bankService : BankService, private commonService :CommonService) { 
@@ -25,7 +26,7 @@ export class OperationComponent  implements OnInit{
   ngOnInit() {
 
         this.commonService.selectClient.subscribe(client => this.client=client);
-        this.operation = new Operation(0, new Date(), 0, 'V', this.client.compte);//par defaut
+       
         this.errors = "";
         this.validation = "";
 
@@ -35,8 +36,10 @@ export class OperationComponent  implements OnInit{
 
   toDoDeposit(){
     console.log("deposit");
-    console.log("deposit : "+ this.operation.montant);
-
+    this.operation = new Operation(0, new Date(), 0, 'V', this.client.compte);//par defaut
+    this.operation.montant = this.montant;
+    console.log("deposit montant : " + this.operation.montant);
+    console.log("deposit montant : " + this.montant);
     this.bankService.deposit(this.operation)
     .subscribe( status => {
                    this.validation = "deposit OK" ;
@@ -64,9 +67,10 @@ export class OperationComponent  implements OnInit{
   toDoWithdrawal(){
 
     console.log("withdrawal");
-
-      this.bankService.withdrawal(this.operation)
-    .subscribe( status => {
+    this.operation = new Operation(0, new Date(), this.montant, 'R', this.client.compte);//par defaut
+    this.operation.montant = this.montant;
+    this.bankService.withdrawal(this.operation)
+          .subscribe( status => {
                    this.validation = "withdrawal OK" ;
                    this.errors ="";
                    this.client.compte.solde -= this.operation.montant;

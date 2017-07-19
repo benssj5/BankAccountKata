@@ -1,0 +1,28 @@
+<h2 class="row">Connection</h2>
+
+<div class="row div-title-page">
+ 
+  <div class="row">
+    <div class="col-sm-4 col-lg-4 col-md-4">
+      <form>
+
+        <div class="form-group">
+          <label for="email">E-mail :</label>
+          <input type="email" class="form-control" id="email" placeholder="Enter your e-mail" [(ngModel)]="email" name="insEmail">
+        </div>
+
+        <div class="form-group">
+          <label for="password">Mot de passe :</label>
+          <input type="password" class="form-control" id="password" placeholder="Enter your password" [(ngModel)]="password"
+            name="insMdp">
+        </div>
+
+        <button type="submit" class="btn btn-primary" (click)="connectClient()">Se connecter</button>
+
+        <div class="alert-danger">{{errors}}</div>
+      
+
+      </form>
+    </div>
+  </div>
+</div>

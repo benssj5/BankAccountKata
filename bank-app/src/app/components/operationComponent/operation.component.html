@@ -1,4 +1,4 @@
-<h2>Operation</h2>
+<h2 class="row">Operation</h2>
 
 <div class="row">
 
@@ -19,15 +19,15 @@
 
 <br>
 
-    <div class="col-sm-4 col-lg-4 col-md-4">
+    <div class="col-sm-4 col-lg-4 col-md-4" *ngIf="client">
       <form>
         <div class="form-group">
           <label for="nom">Amount :</label>
-          <input type="number" class="form-control" id="nom" placeholder="Amount"  step="10" min="10" [(ngModel)]="operation.montant" name="inscMontant">
+          <input type="number" class="form-control" id="nom"  step="10" min="10" [(ngModel)]="montant" name="inscMontant">
         </div>
 
-        <button type="submit" class="btn btn btn-default" (click)="toDoDeposit()">Deposit</button>
-        <button type="submit" class="btn btn btn-default" (click)="toDoWithdrawal()">Withdrawal</button>
+        <button type="submit" class="btn btn-primary" (click)="toDoDeposit()">Deposit</button>
+        <button type="submit" class="btn btn-primary" (click)="toDoWithdrawal()">Withdrawal</button>
         
 
         <div class="bg-success">{{validation}}</div>
@@ -35,3 +35,7 @@
       </form>
     </div>
   </div>
+
+  <div *ngIf="!client" class="row">
+    <span > <a routerLink="../client">return to Client Account Page</a></span>
+</div>

@@ -31,11 +31,11 @@ export class ClientService {
 
     }
 
-    public saveClient(c: Client): Observable<Client> {
+    public saveClient(client: Client): Observable<Client> {
         // http://localhost:8080/services/clients
         let urlWS: string = this.urlWebService_begin + "clients";
 
-        return this._http.post(urlWS, JSON.stringify(c), { headers: this._headers })
+        return this._http.post(urlWS, JSON.stringify(client), { headers: this._headers })
             .map(response => response.json())
             .catch(e => Observable.throw("error : " + e));
     }

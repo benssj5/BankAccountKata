@@ -11,10 +11,15 @@ import { HistoryComponent } from "app/components/historyComponent/history.compon
 import { ClientService } from "app/services/client.service";
 import { BankService } from "app/services/bank.service";
 import { CommonService } from "app/services/common.service";
+import { MenuComponent } from "app/components/menuComponent/menu.component";
+import { ConnectionComponent } from "app/components/connectionComponent/connection.component";
+import { DisconnectionComponent } from "app/components/disconnectionComponent/disconnection.component";
+import { InscriptionComponent } from "app/components/inscriptionComponent/inscription.component";
 
 @NgModule({
   declarations: [
-    AppComponent, ClientComponent, HistoryComponent, OperationComponent
+    AppComponent, ClientComponent, HistoryComponent, OperationComponent,
+    MenuComponent, ConnectionComponent,DisconnectionComponent, InscriptionComponent
   ],
   imports: [
     BrowserModule,AppRoutingModule,HttpModule,FormsModule

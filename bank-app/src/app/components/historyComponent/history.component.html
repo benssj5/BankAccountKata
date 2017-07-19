@@ -1,4 +1,4 @@
-<h2>History</h2>
+<h2 class="row">History</h2>
 
 <table class="table" *ngIf="operations">
     <tr>
@@ -28,5 +28,9 @@
             <td>{{operation.dateOperation | date:'medium'}}</td>
         </tr>
 </table>
+
+<div *ngIf="!operations" class="row">
+    <span > <a routerLink="../client">return to Client Account Page</a></span>
+</div>
 
 

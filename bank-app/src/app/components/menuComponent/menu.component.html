@@ -1,0 +1,11 @@
+
+<div style="text-align:center">
+  <nav>
+    <a routerLink="/client" routerLinkActive="active" *ngIf="client">Client</a>
+    <a routerLink="/operation" routerLinkActive="active" *ngIf="client">Operation</a>
+    <a routerLink="/history" routerLinkActive="active" *ngIf="client">History</a>
+    <a routerLink="/connection" routerLinkActive="active" *ngIf="!client">Connection</a>
+    <a routerLink="/inscription" routerLinkActive="active" *ngIf="!client">Inscription</a>
+    <a routerLink="/disconnection" routerLinkActive="active" *ngIf="client">Disconnection</a>
+  </nav>
+</div>

@@ -22,13 +22,13 @@ export class ClientComponent implements OnInit{
     this.commonService.selectClient.subscribe(
           client => this.client=client);
 
-    //on charge le client
-    this.clientService.connectClient(new Client(1,"","jmoulin@email.com","mdp",null))//on cherche le client par defaut dans la BD
-        .subscribe( client => {this.client = client;
-                               this.commonService.selectClient.next(this.client);//indispensable, on met la nouvelle valeur a partager
-                                console.log("client : " + this.client.nom);
-                                }, 
-                    e => console.log(e.message));
+    // //on charge le client
+    // this.clientService.connectClient(new Client(1,"","jmoulin@email.com","mdp",null))//on cherche le client par defaut dans la BD
+    //     .subscribe( client => {this.client = client;
+    //                            this.commonService.selectClient.next(this.client);//indispensable, on met la nouvelle valeur a partager
+    //                             console.log("client : " + this.client.nom);
+    //                             }, 
+    //                 e => console.log(e.message));
 
     
 
