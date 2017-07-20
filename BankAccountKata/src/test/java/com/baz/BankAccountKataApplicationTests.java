@@ -17,9 +17,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.baz.entities.Client;
 import com.baz.entities.Operation;
+import com.baz.service.IBankService;
+import com.baz.service.IClientService;
 import com.baz.entities.Account;
-import com.baz.metier.IBankService;
-import com.baz.metier.IClientService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baz.entities.Client;
-import com.baz.metier.IClientService;
+import com.baz.service.IClientService;
 
 @CrossOrigin(origins = "*") 
 @RestController

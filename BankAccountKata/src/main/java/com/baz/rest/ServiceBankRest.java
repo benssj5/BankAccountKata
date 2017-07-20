@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.baz.entities.Account;
 import com.baz.entities.Operation;
 import com.baz.entities.Withdrawal;
+import com.baz.service.IBankService;
 import com.baz.entities.DepositTransfer;
-import com.baz.metier.IBankService;
 
 @CrossOrigin(origins = "*") 
 @RestController

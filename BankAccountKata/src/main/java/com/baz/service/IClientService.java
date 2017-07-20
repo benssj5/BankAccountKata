@@ -1,4 +1,4 @@
-package com.baz.metier;
+package com.baz.service;
 
 import com.baz.entities.Client;
 
