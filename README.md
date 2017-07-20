@@ -31,6 +31,9 @@ In order to check my operations
 As a bank client
 I want to see the history (operation, date, amount, balance)  of my operations
 
+Other version very very simple without connnection/login,
+just to save operations from one client at : https://github.com/benmof2017/BankAccountKata.git
+
 ####################################
 
 Techno : Spring Boot, Hibernate/JPA, MySql, Spring data, Spring MVC pour les WebService Rest
