@@ -32,7 +32,7 @@ export class HistoryComponent implements OnInit{
 
     //on recherche toutes les operations
     if(this.client != null) {
-      this.bankService.listOperation(this.client.compte.codeCompte)
+      this.bankService.listOperation(this.client.account.codeAccount)
           .subscribe( listOperations => {this.operations = listOperations;}, 
                       e => console.log(e.message));
     }

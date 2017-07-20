@@ -1,7 +1,5 @@
 package com.baz.rest;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.baz.entities.Client;
 import com.baz.metier.IClientService;
 
-@CrossOrigin(origins = "*") // ou bien autorisations plus fines
+@CrossOrigin(origins = "*") 
 @RestController
 @RequestMapping(value = "/services")
 public class ServiceClientRest {
@@ -27,7 +25,7 @@ public class ServiceClientRest {
 	private static Logger logger = Logger.getLogger(ServiceClientRest.class);
 
 	/**
-	 * Permet de retourner un Client precis par son id
+	 * Return Client by id
 	 * 
 	 * @param id
 	 * @return ResponseEntity<Client>
@@ -40,7 +38,7 @@ public class ServiceClientRest {
 	}
 
 	/**
-	 * Permet de creer un Client
+	 * Creation Client
 	 * 
 	 * @param client
 	 * @return ResponseEntity
@@ -59,7 +57,7 @@ public class ServiceClientRest {
 	public ResponseEntity<Client> connectClient(@RequestBody Client client) {
 		Client cl=null;
 		try {
-			cl = clientService.connect(client);
+			cl = clientService.connectLogin(client);
 		} catch (Exception e) {
 			return new ResponseEntity<Client>(cl, HttpStatus.NOT_FOUND);
 		}
@@ -68,7 +66,7 @@ public class ServiceClientRest {
 	}
 
 	/**
-	 * Permet de supprimer un Client
+	 * Delete Client
 	 * 
 	 * @param client
 	 * @return ResponseEntity

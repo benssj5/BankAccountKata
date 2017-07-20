@@ -21,13 +21,13 @@ public abstract class Operation implements Serializable{
 @Id @GeneratedValue
 private Long numero;
 private Date dateOperation;
-private double montant;
+private double amount;
 @Column(name = "type_op", insertable = false, updatable=false )
 private String type_op;
 
 @ManyToOne
-@JoinColumn(name="CODE_CPTE")
-private Compte compte;
+@JoinColumn(name="CODE_ACCOUNT")
+private Account account;
 
 
 public Operation() {
@@ -36,12 +36,12 @@ public Operation() {
 }
 
 
-public Operation(Date dateOperation, double montant, Compte compte) {
+public Operation(Date dateOperation, double amount, Account account) {
 	super();
 	
 	this.dateOperation = dateOperation;
-	this.montant = montant;
-	this.compte = compte;
+	this.amount = amount;
+	this.account = account;
 }
 
 
@@ -65,23 +65,23 @@ public void setDateOperation(Date dateOperation) {
 }
 
 
-public double getMontant() {
-	return montant;
+public double getAmount() {
+	return amount;
 }
 
 
-public void setMontant(double montant) {
-	this.montant = montant;
+public void setAmount(double amount) {
+	this.amount = amount;
 }
 
 
-public Compte getCompte() {
-	return compte;
+public Account getAccount() {
+	return account;
 }
 
 
-public void setCompte(Compte compte) {
-	this.compte = compte;
+public void setAccount(Account account) {
+	this.account = account;
 }
 
 

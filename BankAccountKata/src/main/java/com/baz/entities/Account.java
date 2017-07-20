@@ -2,7 +2,6 @@ package com.baz.entities;
 
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -10,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -18,13 +16,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity
-public class Compte implements Serializable{
+public class Account implements Serializable{
 
 	@Id
-	private String codeCompte;
+	private String codeAccount;
 	private Date dateCreation;
-	private double solde;
-	private double decouvert;
+	private double amount;
+	private double overdraft;
 	
 	@JsonIgnore
 	@OneToOne(fetch = FetchType.LAZY)
@@ -32,29 +30,29 @@ public class Compte implements Serializable{
 	private Client client;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy="compte")
+	@OneToMany(mappedBy="account")
 	private List<Operation> operations;
 
-	public Compte(String codeCompte, Date dateCreation, double solde, double decouvert, Client client) {
+	public Account(String codeAccount, Date dateCreation, double amount, double overdraft, Client client) {
 		super();
-		this.codeCompte = codeCompte;
+		this.codeAccount = codeAccount;
 		this.dateCreation = dateCreation;
-		this.solde = solde;
-		this.decouvert = decouvert;
+		this.amount = amount;
+		this.overdraft = overdraft;
 		this.client = client;
 	}
 
-	public Compte() {
+	public Account() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public String getCodeCompte() {
-		return codeCompte;
+	public String getCodeAccount() {
+		return codeAccount;
 	}
 
-	public void setCodeCompte(String codeCompte) {
-		this.codeCompte = codeCompte;
+	public void setCodeAccount(String codeAccount) {
+		this.codeAccount = codeAccount;
 	}
 
 	public Date getDateCreation() {
@@ -65,20 +63,20 @@ public class Compte implements Serializable{
 		this.dateCreation = dateCreation;
 	}
 
-	public double getSolde() {
-		return solde;
+	public double getAmount() {
+		return amount;
 	}
 
-	public void setSolde(double solde) {
-		this.solde = solde;
+	public void setAmount(double amount) {
+		this.amount = amount;
 	}
 	
-	public double getDecouvert() {
-		return decouvert;
+	public double getOverdraft() {
+		return overdraft;
 	}
 
-	public void setDecouvert(double decouvert) {
-		this.decouvert = decouvert;
+	public void setOverdraft(double overdraft) {
+		this.overdraft = overdraft;
 	}
 
 	public Client getClient() {

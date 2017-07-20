@@ -1,6 +1,5 @@
 package com.baz.metier;
 
-
 import java.util.Date;
 import java.util.List;
 
@@ -11,12 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.baz.dao.IClientRepository;
-import com.baz.dao.ICompteRepository;
+import com.baz.dao.IAccountRepository;
 import com.baz.dao.IOperationRepository;
 import com.baz.entities.Client;
-import com.baz.entities.Compte;
-import com.baz.entities.Operation;
-
+import com.baz.entities.Account;
 
 @Service
 @Transactional
@@ -24,38 +21,38 @@ public class ClientServiceImpl implements IClientService {
 
 	@Autowired
 	private IClientRepository clientDao;
-	
+
 	@Autowired
-	private ICompteRepository compteDao;
-	
+	private IAccountRepository accountDao;
+
 	@Autowired
 	private IOperationRepository operationDao;
-	
+
 	private static Logger logger = Logger.getLogger(ClientServiceImpl.class);
-	
+
 	@Override
 	/**
-	 * @param client, le client que l'on souhaite creer
-	 * @return Client si tout est OK, null sinon
+	 * @param client,
+	 * Permit to create a client
+	 * @return Client if all is OK, null if KO
 	 */
 	public Client create(Client client) {
 		Client c = null;
 		if (findByEmail(client) != null) {
-			logger.error("Ce mail est déjà existant");
+			logger.error("This mail already exist");
 
 		} else {
-			Compte compte;
-			client.setCompte(null);
+			Account account;
+			client.setAccount(null);
 			c = clientDao.save(client);
-			String codeCompteAutoMatic = Long.valueOf(new Date().getTime()).toString();
-			compte = new Compte(codeCompteAutoMatic, new Date(), 1000, 200, c);
-			compte = compteDao.save(compte);
-			c.setCompte(compte);
-			logger.debug("Vous avez été bien inscrit");
+			String codeAccountAutoMatic = Long.valueOf(new Date().getTime()).toString();
+			account = new Account(codeAccountAutoMatic, new Date(), 1000, 200, c);
+			account = accountDao.save(account);
+			c.setAccount(account);
+			logger.debug("Inscription OK");
 		}
 		return c;
 	}
-	
 
 	@Override
 	public Client selectById(Long id) {
@@ -63,26 +60,33 @@ public class ClientServiceImpl implements IClientService {
 		Client c = clientDao.findOne(id);
 		return c;
 	}
-	
 
 	@Override
 	/**
-	 * @param id, l'id du client a supprimer
+	 * Delete a client by his Id
+	 * @param id,
+	 * @return true if all is OK, false if KO
 	 */
-	public void delete(Long id) {
+	public boolean delete(Long id) {
 		Client client = clientDao.findOne(id);
-		operationDao.deleteOperationByCompte(client.getCompte().getCodeCompte());
-		compteDao.delete(client.getCompte());
-		clientDao.delete(id);
+		operationDao.deleteOperationByAccount(client.getAccount().getCodeAccount());
+		accountDao.delete(client.getAccount());
+		try {
+			clientDao.delete(id);
+			return true;
+		} catch (Exception e) {
+			return false;
+		} 
 	}
 
 
 	@Override
 	/**
-	 * @param client, on utilise l email et password pour se connecter
-	 * @return client ou null si la connection n'a pas eu lieu
+	 * use email and password to connect a client
+	 * @param client,
+	 * @return client or null if doesn't exist
 	 */
-	public Client connect(Client c) {
+	public Client connectLogin(Client c) {
 		Client c2 = null;
 		List<Client> listCli = null;
 		try {
@@ -91,26 +95,28 @@ public class ClientServiceImpl implements IClientService {
 				c2 = listCli.get(0);
 			}
 		} catch (Exception e) {
+			throw new RuntimeException("We don't find this Account");
 		}
 		return c2;
 	}
-	
-	
+
 	/**
-	 * @param c, le client que l'on recherche grace a son mail
-	 * @return Client, null sinon
+	 * search client by email
+	 * @param client,
+	 * @return Client, null if doesn't exist
 	 */
-	public Client findByEmail(Client c) {
-		Client c3 = null;
+	public Client findByEmail(Client client) {
+		Client c2 = null;
 		List<Client> listCli = null;
 		try {
-			listCli = clientDao.clientExiste(c.getEmail());
+			listCli = clientDao.returnClientByEmail(client.getEmail());
 			if (listCli != null && listCli.size() > 0) {
-				c3 = listCli.get(0);
+				c2 = listCli.get(0);
 			}
 		} catch (Exception e) {
+			throw new RuntimeException("We don't find this Account");
 		}
-		return c3;
+		return c2;
 	}
 
 }

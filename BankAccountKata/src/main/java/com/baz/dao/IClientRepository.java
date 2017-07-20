@@ -17,6 +17,6 @@ public interface IClientRepository extends JpaRepository<Client, Long>{
 	public List<Client> connectClientLogin(@Param("x") String email,@Param("y") String password);
 	
 	@Query("select c from Client c where c.email =:x")
-	public List<Client> clientExiste(@Param("x") String email);
+	public List<Client> returnClientByEmail(@Param("x") String email);
 
 }

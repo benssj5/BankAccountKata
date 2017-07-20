@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,48 +14,48 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.baz.entities.Compte;
+import com.baz.entities.Account;
 import com.baz.entities.Operation;
-import com.baz.entities.Retrait;
-import com.baz.entities.Versement;
-import com.baz.metier.IBanqueMetier;
+import com.baz.entities.Withdrawal;
+import com.baz.entities.DepositTransfer;
+import com.baz.metier.IBankService;
 
-@CrossOrigin(origins = "*") // ou bien autorisations plus fines
+@CrossOrigin(origins = "*") 
 @RestController
 @RequestMapping(value = "/services")
-public class ServiceBanqueRest {
+public class ServiceBankRest {
 
 	@Autowired
-	private IBanqueMetier metier;
-	private static Logger logger = Logger.getLogger(ServiceBanqueRest.class);
+	private IBankService bankService;
+	private static Logger logger = Logger.getLogger(ServiceBankRest.class);
 	
 	/**
-	 * Permet de retourner un omptent precis par son id
+	 * Return account by Id
 	 * 
 	 * @param codeCpte, l'id du compte
 	 * @return ResponseEntity<Compte>
 	 */
-	@RequestMapping(value = "/compte/{codeCpte}", method = RequestMethod.GET)
-	public ResponseEntity<Compte> consulterCompte(@PathVariable("codeCpte")String codeCpte) {
-		Compte compte=null;
+	@RequestMapping(value = "/compte/{codeAccount}", method = RequestMethod.GET)
+	public ResponseEntity<Account> consulterAccount(@PathVariable("codeAccount")String codeAccount) {
+		Account account=null;
 		try {
-			compte = metier.consulterCompte(codeCpte);
+			account = bankService.consultAccount(codeAccount);
 		} catch (Exception e) {
-			return new ResponseEntity<Compte>(compte, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<Account>(account, HttpStatus.NOT_FOUND);
 		}
 
-		return new ResponseEntity<Compte>(compte, HttpStatus.OK);
+		return new ResponseEntity<Account>(account, HttpStatus.OK);
 	}
 	
 	
 	
 	// http://localhost:8080/services/deposit
 	@RequestMapping(value = "/deposit", method = RequestMethod.PUT)
-	public ResponseEntity<Boolean> verser(@RequestBody Versement operation) {
+	public ResponseEntity<Boolean> deposit(@RequestBody DepositTransfer operation) {
 		try {
-			String codeCpte = operation.getCompte().getCodeCompte();
-			double montant = operation.getMontant();
-			metier.verser(codeCpte, montant);
+			String codeAccount = operation.getAccount().getCodeAccount();
+			double amount = operation.getAmount();
+			bankService.deposit(codeAccount, amount);
 		} catch (Exception e) {
 			return new ResponseEntity<Boolean>(false, HttpStatus.NOT_FOUND);
 		}
@@ -66,11 +65,11 @@ public class ServiceBanqueRest {
 	
 	// http://localhost:8080/services/withdrawal
 	@RequestMapping(value = "/withdrawal", method = RequestMethod.PUT)
-	public ResponseEntity<Boolean> retirer(@RequestBody Retrait operation) {
+	public ResponseEntity<Boolean> withdrawal(@RequestBody Withdrawal operation) {
 		try {
-			String codeCpte = operation.getCompte().getCodeCompte();
-			double montant = operation.getMontant();
-			metier.retirer(codeCpte, montant);
+			String codeCpte = operation.getAccount().getCodeAccount();
+			double amount = operation.getAmount();
+			bankService.withdrawal(codeCpte, amount);
 		} catch (Exception e) {
 			return new ResponseEntity<Boolean>(false, HttpStatus.NOT_FOUND);
 		}
@@ -80,34 +79,30 @@ public class ServiceBanqueRest {
 	
 	/**
 	 * implementer pour une futur version
-	 * @param codeCpte1, l'id du compte qui envoie l'argent
-	 * @param codeCpte2, l'id du compte qui recois l'argent
+	 * @param codeAccount1, id of account to send money
+	 * @param codeAccount2, id of account to receive money
 	 * @param montant
-	 * @return true si tout est OK, false sinon
+	 * @return true if all is OK
 	 */
-	// http://localhost:8080/services/transfer?codeCpte1=012345&codeCpte2=987654&montant=500
+	// http://localhost:8080/services/transfer?codeAccount1=012345&codeAccount2=987654&amount=500
 	@RequestMapping(value = "/transfer", method = RequestMethod.PUT)
-	public ResponseEntity<Boolean> virement(@RequestParam String codeCpte1, String codeCpte2, double montant) {
+	public ResponseEntity<Boolean> transfer(@RequestParam String codeAccount1, String codeAccount2, double amount) {
 		
 		try {
-			metier.virement(codeCpte1, codeCpte2, montant);
+			bankService.transfertToOtherAccount(codeAccount1, codeAccount2, amount);
 		} catch (Exception e) {
 			return new ResponseEntity<Boolean>(false, HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 	}
 	
-	//à faire
-	public Page<Operation> listOperation(String codeCpte, int page, int size){
-		return null;
-	}
 	
-	@RequestMapping(value = "/operations/{codeCpte}", method = RequestMethod.GET)
-	public ResponseEntity<List<Operation>> listOperation(@PathVariable String codeCpte){
+	@RequestMapping(value = "/operations/{codeAccount}", method = RequestMethod.GET)
+	public ResponseEntity<List<Operation>> listOperation(@PathVariable String codeAccount){
 		
 		List<Operation> operations=null;
 		try {
-			operations = metier.listOperation(codeCpte);
+			operations = bankService.listOperation(codeAccount);
 		} catch (Exception e) {
 			return new ResponseEntity<List<Operation>>(operations, HttpStatus.NOT_FOUND);
 		}

@@ -6,7 +6,7 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
-import { Compte } from "app/models/compte";
+import { Account } from "app/models/account";
 import { Operation } from "app/models/operation";
 import { AppUrlConfig } from "app/app.url-config";
 
@@ -24,7 +24,7 @@ export class BankService {
         // _http injecté ici servira a appeler des WS REST
     }
 
-    public consultCompte(codeCpte: number): Observable<Compte> {
+    public consultCompte(codeCpte: number): Observable<Account> {
 
         let urlWS: string = this.urlWebService_begin + "compte/" + codeCpte;
         return this._http.get(urlWS)

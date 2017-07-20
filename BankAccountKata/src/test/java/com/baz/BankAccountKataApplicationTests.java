@@ -3,6 +3,7 @@ package com.baz;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -15,8 +16,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.baz.entities.Client;
-import com.baz.entities.Compte;
-import com.baz.metier.IBanqueMetier;
+import com.baz.entities.Operation;
+import com.baz.entities.Account;
+import com.baz.metier.IBankService;
 import com.baz.metier.IClientService;
 
 @RunWith(SpringRunner.class)
@@ -28,101 +30,124 @@ public class BankAccountKataApplicationTests {
 	@Autowired
 	private IClientService clientService;
 	@Autowired
-	private IBanqueMetier metier;
+	private IBankService bankService;
 
-	private String email = "cl1@email.com";
+	private String email = "test@email.com";
 	private String password = "mdp";
 	private static Client client;
 
 	@Before
 	public void initTests() {
-		client = new Client("clientTest1", email, password);
+		client = new Client("clientTest", email, password);
 
 	}
 
 	@Test
-	public void contextLoads() {
+	public void testCreateClient() {
 
-	}
-
-	@Test
-	public void testClient1() {
-
-		// Creation du client
+		// Creation client
 		client = clientService.create(client);
-		assertNotNull("La création du client a échouée", client);
+		assertNotNull("test creation client doesn't work", client);
+		boolean status = clientService.delete(client.getCode());
+		assertTrue("test delete client doesn't work !!!", status);
 	}
 
 	@Test
-	public void testClient2() {
+	public void testConnectClientByEmailPassword() {
 
-		// Connection au client avec son email et password
-		Client client2 = clientService.connect(client);
-		assertNotNull("La connection du client avec email et password a échouée", client2);
+		client = clientService.create(client);
+		// Connection to the client with his email and his password
+		Client client2 = clientService.connectLogin(client);
+		assertNotNull("Connection client with email and password doesn't work !!!", client2);
+		boolean status = clientService.delete(client2.getCode());
+		assertTrue("test delete client doesn't work !!!", status);
 	}
 
 	@Test
-	public void testClient3() {
-		// Selection du client par son id
-		client = clientService.connect(client);
+	public void testConnectClientById() {
+		client = clientService.create(client);
+		// connect client by his id
 		Client client3 = clientService.selectById(client.getCode());
-		assertNotNull("La selection du client par id a échouée", client3);
+		assertNotNull("Selection client By id doesn't work !!!", client3);
+		boolean status = clientService.delete(client3.getCode());
+		assertTrue("test delete client doesn't work !!!", status);
 	}
 
 	@Test
-	public void testClient4() {
-		// trouver un client par son email
+	public void testFindClientByEmail() {
+		client = clientService.create(client);
+		// find a client by his email
 		Client client4 = clientService.findByEmail(client);
-		assertNotNull("La selection du client par son email a échouée", client4);
-	}
-
-	@Test
-	public void testClient5() {
-		// suppression client
-		System.out.println("HELLO " + client.getEmail());
-		Client client5 = clientService.findByEmail(client);
-		System.out.println("HELLO 2 " + client5.getEmail());
-		clientService.delete(client5.getCode());
-		client5 = clientService.findByEmail(client5);
-		assertNull("La suppression du client a échouée", client5);
-
+		assertNotNull("Selection client his email doesn't work !!!", client4);
+		boolean status = clientService.delete(client4.getCode());
+		assertTrue("test delete client doesn't work !!!", status);
 	}
 
 	
 	@Test
-	public void testCompte1() {
-		// trouver un compte par son id
+	public void testConsultAccount() {
+		// find an account par son id
 		
-		//creation du client
+		//creation of the client
 		client = clientService.create(client);
-		System.out.println(client + " " + client.getCompte());
-		String codeCompte = client.getCompte().getCodeCompte();
+		String codeAccount = client.getAccount().getCodeAccount();
 		
-		Compte compte = metier.consulterCompte(codeCompte);
-		assertNotNull("La consultation du compte a échouée", compte);
+		Account account = bankService.consultAccount(codeAccount);
+		assertNotNull("Find account doesn't work !!!", account);
+		boolean status = clientService.delete(client.getCode());
+		assertTrue("test delete client doesn't work !!!", status);
+	}
 		
-		//versement
-		double solde = compte.getSolde();
-		metier.verser(compte.getCodeCompte(), 2000);
-	 	Compte compte2 = metier.consulterCompte(codeCompte);
-	 	logger.debug("nouveau solde : " + compte2.getSolde());
-	 	assertEquals(solde + 2000, compte2.getSolde(),0);
+	@Test
+	public void testDeposit() {
+		//creation of the client
+		client = clientService.create(client);
+		Account account = bankService.consultAccount(client.getAccount().getCodeAccount());
+		//deposit
+		double amount = account.getAmount();
+		bankService.deposit(account.getCodeAccount(), 2000);
+	 	Account account2 = bankService.consultAccount(client.getAccount().getCodeAccount());
+	 	logger.debug("nouveau solde : " + account2.getAmount());
+	 	assertEquals(amount + 2000, account2.getAmount(),0);
+	 	boolean status = clientService.delete(client.getCode());
+		assertTrue("test delete client doesn't work !!!", status);
+	}
 	 	
-	 	//retirer
-	 	solde = compte2.getSolde();
-	 	metier.retirer(compte2.getCodeCompte(), 500);
-	 	Compte compte3 = metier.consulterCompte(codeCompte);
-	 	assertEquals(solde - 500, compte3.getSolde(),0);
+	@Test
+	public void testWithdrawal() {
+		//creation of the client
+		client = clientService.create(client);
+		Account account2 = bankService.consultAccount(client.getAccount().getCodeAccount());
+	 	//withdrawal
+		double amount = account2.getAmount();
+		bankService.withdrawal(account2.getCodeAccount(), 500);
+	 	Account account3 = bankService.consultAccount(client.getAccount().getCodeAccount());
+	 	assertEquals(amount - 500, account3.getAmount(),0);
+	 	boolean status = clientService.delete(client.getCode());
+	 	assertTrue("test delete client doesn't work !!!", status);
+	}
 	 	
 	 	
-	 	//listing Operations
 	 	
+	 	@Test
+		public void testListOperation() {
+			//creation of the client
+			client = clientService.create(client);
+			Account account = bankService.consultAccount(client.getAccount().getCodeAccount());
+			double amount = account.getAmount();
+			bankService.deposit(account.getCodeAccount(), 5000);
+			bankService.withdrawal(account.getCodeAccount(), 500);
+			bankService.withdrawal(account.getCodeAccount(), 500);
+			Account account2 = bankService.consultAccount(client.getAccount().getCodeAccount());
+			assertEquals(amount + 5000 - 500 - 500,account2.getAmount(),0);
+			List<Operation> list = bankService.listOperation(account.getCodeAccount());
+			assertEquals(3, list.size());
+			//delete client
+		 	clientService.delete(client.getCode());
 	 	
-	 	//suppression du client
-	 	clientService.delete(client.getCode());
 		
 	}
-	//
+	
 
 
 

@@ -23,7 +23,7 @@ export class DisconnectionComponent implements OnInit{
         //on deconnecte
         this.commonService.selectClient.next(null);
 
-        //pour faire une redirection automatique
+        //automatic redirection 
         // let link=['/client'];
         // this._router.navigate(link);  
 

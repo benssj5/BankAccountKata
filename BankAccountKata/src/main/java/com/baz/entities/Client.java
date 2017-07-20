@@ -3,35 +3,33 @@ package com.baz.entities;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Client implements Serializable{
 
 	@Id @GeneratedValue
 	private Long code;
-	private String nom;
+	private String name;
 	private String email;
 	private String password;
 	
 	
 	@OneToOne(mappedBy = "client")
-	private Compte compte;
+	private Account account;
 
-	public Client(String nom, String email) {
+	public Client(String name, String email) {
 		super();
-		this.nom = nom;
+		this.name = name;
 		this.email = email;
 	}
 	
-	public Client(String nom, String email, String password) {
+	public Client(String name, String email, String password) {
 		super();
-		this.nom = nom;
+		this.name = name;
 		this.email = email;
 		this.password = password;
 	}
@@ -49,12 +47,12 @@ public class Client implements Serializable{
 		this.code = code;
 	}
 
-	public String getNom() {
-		return nom;
+	public String getName() {
+		return name;
 	}
 
-	public void setNom(String nom) {
-		this.nom = nom;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getEmail() {
@@ -73,12 +71,12 @@ public class Client implements Serializable{
 		this.password = password;
 	}
 
-	public Compte getCompte() {
-		return compte;
+	public Account getAccount() {
+		return account;
 	}
 
-	public void setCompte(Compte compte) {
-		this.compte = compte;
+	public void setAccount(Account account) {
+		this.account = account;
 	}
 	
 	

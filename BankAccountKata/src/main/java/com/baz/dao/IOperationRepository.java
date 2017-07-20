@@ -13,11 +13,11 @@ import org.springframework.data.repository.query.Param;
 
 public interface IOperationRepository extends JpaRepository<Operation, Long>{
 	
-	@Query("select o from Operation o where o.compte.codeCompte =:x order by o.dateOperation desc")
+	@Query("select o from Operation o where o.account.codeAccount =:x order by o.dateOperation desc")
 	public List<Operation> listOperation(@Param("x")String codeCpte);
 	
 	@Modifying
-	@Query("delete from Operation o where o.compte.codeCompte = :x ")
-	public void deleteOperationByCompte(@Param("x")String codeCpte);
+	@Query("delete from Operation o where o.account.codeAccount = :x ")
+	public void deleteOperationByAccount(@Param("x")String codeAccount);
 	
 }

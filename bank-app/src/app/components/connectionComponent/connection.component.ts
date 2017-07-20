@@ -27,22 +27,23 @@ export class ConnectionComponent implements OnInit{
   }//fin ngOnINit
 
 
-//connection du client
+//connection client
   connectClient(){
     this.client = new Client(1,"","","",null);
     this.client.email = this.email;
     this.client.password = this.password;
 
-    this.clientService.connectClient(this.client)//on cherche le client par defaut dans la BD
+    this.clientService.connectClient(this.client)
         .subscribe( client => { this.client = client;
-                                this.commonService.selectClient.next(this.client);//indispensable, on met la nouvelle valeur a partager
-                                console.log("client : " + this.client.nom);
-                                //pour faire une redirection automatique
+                                this.commonService.selectClient.next(this.client);
+                                //automatic redirection 
                                 let link=['/client'];
                                 this._router.navigate(link);  
     
                                 }, 
-                    e => console.log(e.message));
+                    e => {//console.log(e.message);
+                          this.errors="Incorrect username or password.";}
+                    );
 
   }
 

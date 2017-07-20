@@ -6,7 +6,7 @@
 <table class="pure-table-striped"  *ngIf="client">
         <tr>
             <th>Account Name :</th>
-            <td> {{client.nom}}</td>
+            <td> {{client.name}}</td>
         </tr>
         <tr>
             <th>Email :</th>
@@ -14,15 +14,15 @@
         </tr>
         <tr>
             <th>Account number :</th>
-            <td> {{client.compte.codeCompte}}</td>
+            <td> {{client.account.codeAccount}}</td>
         </tr>
         <tr>
             <th>Amount :</th>
-            <td> {{client.compte.solde}} €</td>
+            <td> {{client.account.amount}} €</td>
         </tr>
         <tr>
             <th>authorized overdraft :</th>
-            <td> {{client.compte.decouvert}} €</td>
+            <td> {{client.account.overdraft}} €</td>
         </tr>
 
 </table>

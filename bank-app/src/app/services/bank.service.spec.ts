@@ -4,7 +4,7 @@ import { TestBed, inject } from "@angular/core/testing";
 import { BankService } from "app/services/bank.service";
 import { HttpModule } from "@angular/http";
 import { Client } from "app/models/client";
-import { Compte } from "app/models/compte";
+import { Account } from "app/models/account";
 import { ClientService } from "app/services/client.service";
 import { Operation } from "app/models/operation";
 
@@ -16,7 +16,7 @@ import { Operation } from "app/models/operation";
 describe('scenario description...', () => {
 
     let client:Client;
-    let compte:Compte;
+    let compte:Account;
     let operation:Operation;
 
 //setup
@@ -38,7 +38,7 @@ beforeEach(() => TestBed.configureTestingModule({
 
     });
 
-    bankService.consultCompte(this.client.compte.codeCompte).subscribe(compte => { 
+    bankService.consultCompte(this.client.account.codeCompte).subscribe(compte => { 
     this.compte = compte;
     expect(this.compte).not.toBeNull();
   	expect(this.compte.decouvert).toEqual(200);
@@ -60,7 +60,7 @@ beforeEach(() => TestBed.configureTestingModule({
     });
 
     let solde = this.compte.solde;console.log("SOLDE ============= " + solde);
-    this.operation = new Operation(0, new Date(), 400, 'V', this.client.compte);
+    this.operation = new Operation(0, new Date(), 400, 'V', this.client.account);
 
     //on fait un deposit de 400
     bankService.deposit(this.operation).subscribe(status => { 
@@ -68,7 +68,7 @@ beforeEach(() => TestBed.configureTestingModule({
     });
 
     //on verifie que le solde a augmenter de 400
-    bankService.consultCompte(this.client.compte.codeCompte).subscribe(compte => { 
+    bankService.consultCompte(this.client.account.codeCompte).subscribe(compte => { 
         expect(compte.solde).toEqual(solde + 400);
     });
 
@@ -90,7 +90,7 @@ beforeEach(() => TestBed.configureTestingModule({
     });
 
     let solde = this.compte.solde;
-    this.operation = new Operation(0, new Date(), 400, 'R', this.client.compte);
+    this.operation = new Operation(0, new Date(), 400, 'R', this.client.account);
 
      //on fait un deposit de 400
     bankService.withdrawal(this.operation).subscribe(status => { 
@@ -98,7 +98,7 @@ beforeEach(() => TestBed.configureTestingModule({
     });
 
     //on verifie que le solde a augmenter de 400
-    bankService.consultCompte(this.client.compte.codeCompte).subscribe(compte => { 
+    bankService.consultCompte(this.client.account.codeCompte).subscribe(compte => { 
         expect(compte.solde).toEqual(solde - 400);
     });
 

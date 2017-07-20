@@ -5,15 +5,15 @@
 <table class="table_minima" *ngIf="client">
     <tr>
         <th>Account name :</th>
-        <td>{{client.nom}}</td> 
+        <td>{{client.name}}</td> 
     </tr>
     <tr>
         <th>Amount :</th>
-        <td>{{client.compte.solde}}€</td>
+        <td>{{client.account.amount}}€</td>
     </tr>
     <tr>
         <th>authorized overdraft :</th>
-        <td> {{client.compte.decouvert}} €</td>
+        <td> {{client.account.overdraft}} €</td>
     </tr>
 </table>
 
@@ -22,8 +22,8 @@
     <div class="col-sm-4 col-lg-4 col-md-4" *ngIf="client">
       <form>
         <div class="form-group">
-          <label for="nom">Amount :</label>
-          <input type="number" class="form-control" id="nom"  step="10" min="10" [(ngModel)]="montant" name="inscMontant">
+          <label for="amount">Amount :</label>
+          <input type="number" class="form-control" id="nom"  step="10" min="10" [(ngModel)]="amount" name="inscAmount">
         </div>
 
         <button type="submit" class="btn btn-primary" (click)="toDoDeposit()">Deposit</button>

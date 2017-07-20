@@ -15,7 +15,7 @@ export class OperationComponent  implements OnInit{
  private operation : Operation;
  private errors: string;
  private validation: string;
- private montant:number=0;
+ private amount:number=0;
 
 
   constructor(private bankService : BankService, private commonService :CommonService) { 
@@ -35,23 +35,20 @@ export class OperationComponent  implements OnInit{
 
 
   toDoDeposit(){
-    console.log("deposit");
-    this.operation = new Operation(0, new Date(), 0, 'V', this.client.compte);//par defaut
-    this.operation.montant = this.montant;
-    console.log("deposit montant : " + this.operation.montant);
-    console.log("deposit montant : " + this.montant);
+
+    this.operation = new Operation(0, new Date(), 0, 'D', this.client.account);//par defaut
+    this.operation.amount = this.amount;
     this.bankService.deposit(this.operation)
     .subscribe( status => {
                    this.validation = "deposit OK" ;
                    this.errors ="";
-                   this.client.compte.solde += this.operation.montant;
+                   this.client.account.amount += this.operation.amount;
                       new Promise(resolve => {
                       // Simulate server latency with 1 second delay
                       setTimeout(() => resolve( this.validation="" ), 1000);
                       });
                   }, 
                     e => {
-                      console.log(e.message)
                       this.validation = "" ;
                       this.errors = "Error during validation" ;
                        new Promise(resolve => {
@@ -66,21 +63,19 @@ export class OperationComponent  implements OnInit{
   
   toDoWithdrawal(){
 
-    console.log("withdrawal");
-    this.operation = new Operation(0, new Date(), this.montant, 'R', this.client.compte);//par defaut
-    this.operation.montant = this.montant;
+    this.operation = new Operation(0, new Date(), this.amount, 'W', this.client.account);//par defaut
+    this.operation.amount = this.amount;
     this.bankService.withdrawal(this.operation)
           .subscribe( status => {
                    this.validation = "withdrawal OK" ;
                    this.errors ="";
-                   this.client.compte.solde -= this.operation.montant;
+                   this.client.account.amount -= this.operation.amount;
                     new Promise(resolve => {
                       // Simulate server latency with 1 second delay
                       setTimeout(() => resolve( this.validation="" ), 1000);
                       });
                   }, 
                     e => {
-                      console.log(e.message)
                       this.validation = "" ;
                       this.errors = "Error, check if you have enough money in your account please !" ;
                         new Promise(resolve => {
